@@ -1,79 +1,40 @@
-#include "main.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 /**
- * alloc_grid - create a 2-dimensional array with each element set to 0
- * @width: desired number of columns
- * @height: desired number of rows
+ * **alloc_grid - returns pointer to a 2D array of integers
  *
- * Return: NULL if memory allocation fails or any argument is less than 1,
- * otherwise return a pointer to the first element of the array.
+ * @width: width of 2d array
+ * @height: height of 2d array
+ * Return: pointer to the array or NULL on failure
  */
 int **alloc_grid(int width, int height)
 {
-	int **matrix, row, column;
+	int **a;
+	int i, k;
 
-	if (width < 1 || height < 1)
+
+	if (width <= 0 || height <= 0)
 		return (NULL);
-
-	matrix = (int **) malloc(sizeof(int *) * height);
-
-	if (!matrix)
+	a = malloc(sizeof(*a) * height);
+	if (a == 0)
 		return (NULL);
-
-	for (row = 0; row < height; ++row)
+	for (i = 0; i < height; i++)
 	{
-		matrix[row] = (int *) malloc(sizeof(int) * width);
-
-		if (!matrix[row])
+		a[i] = malloc(sizeof(int) * width);
+		if (a[i] == 0)
 		{
-			while (--row > -1)
-				free(matrix[row]);
-			free(matrix);
+			for (k = 0; k < i; k++)
+			{
+				free(a[k]);
+			}
+			free(a);
 			return (NULL);
 		}
-
-		for (column = 0; column < width; ++column)
-			matrix[row][column] = 0;
-	}
-
-	return (matrix);
-}include "holberton.h"
-
-/**
- * alloc_grid - create a 2-dimensional array with each element set to 0
- * @width: desired number of columns
- * @height: desired number of rows
- *
- * Return: NULL if memory allocation fails or any argument is less than 1,
- * otherwise return a pointer to the first element of the array.
- */
-int **alloc_grid(int width, int height)
-{
-	int **matrix, row, column;
-
-	if (width < 1 || height < 1)
-		return (NULL);
-
-	matrix = (int **) malloc(sizeof(int *) * height);
-
-	if (!matrix)
-		return (NULL);
-
-	for (row = 0; row < height; ++row)
-	{
-		matrix[row] = (int *) malloc(sizeof(int) * width);
-
-		if (!matrix[row])
+		for (k = 0; k < width; k++)
 		{
-			while (--row > -1)
-				free(matrix[row]);
-			free(matrix);
-			return (NULL);
+			a[i][k] = 0;
 		}
-
-		for (column = 0; column < width; ++column)
-			matrix[row][column] = 0;
 	}
-
-	return (matrix);
+	return (a);
 }
